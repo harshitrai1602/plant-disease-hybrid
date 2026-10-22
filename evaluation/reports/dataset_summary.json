@@ -1,0 +1,43 @@
+{
+  "status": "DATASET AVAILABLE",
+  "total_images": 23216,
+  "total_classes_raw": 17,
+  "images_per_dataset": {
+    "plantvillage": 20638,
+    "plantdoc": 2578
+  },
+  "images_per_class": {
+    "plantvillage/Potato___Late_blight": 1000,
+    "plantvillage/Tomato_Bacterial_spot": 2127,
+    "plantvillage/Tomato_Spider_mites_Two_spotted_spider_mite": 1676,
+    "plantvillage/Pepper__bell___Bacterial_spot": 997,
+    "plantvillage/Tomato__Target_Spot": 1404,
+    "plantvillage/Tomato__Tomato_YellowLeaf__Curl_Virus": 3208,
+    "plantvillage/Tomato_Leaf_Mold": 952,
+    "plantvillage/Tomato_Septoria_leaf_spot": 1771,
+    "plantvillage/Tomato_healthy": 1591,
+    "plantvillage/Tomato__Tomato_mosaic_virus": 373,
+    "plantvillage/Tomato_Early_blight": 1000,
+    "plantvillage/Pepper__bell___healthy": 1478,
+    "plantvillage/Potato___healthy": 152,
+    "plantvillage/Tomato_Late_blight": 1909,
+    "plantvillage/Potato___Early_blight": 1000,
+    "plantdoc/test": 236,
+    "plantdoc/train": 2342
+  },
+  "corrupted_images": 0,
+  "image_formats": {
+    "JPEG": 23208,
+    "PNG": 6,
+    "MPO": 2
+  },
+  "image_dimensions": {
+    "min_w": 115,
+    "max_w": 6000,
+    "min_h": 69,
+    "max_h": 6000,
+    "avg_w": 346.1461922811854,
+    "avg_h": 328.6836233631978
+  },
+  "class_imbalance_ratio": 21.11
+}

@@ -1,0 +1,34 @@
+﻿# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Raw datasets - DO NOT PUSH
+data/raw/
+
+# ML model/checkpoint files - DO NOT PUSH
+*.pth
+*.pt
+*.ckpt
+*.onnx
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp

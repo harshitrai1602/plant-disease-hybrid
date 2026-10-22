@@ -1,0 +1,6 @@
+{
+  "model": "efficientnet_b0",
+  "epochs": 1,
+  "best_val_acc": 0.9106835152211373,
+  "status": "DEMO 1 EPOCH - RUN WITH --epochs 20 FOR FINAL"
+}
