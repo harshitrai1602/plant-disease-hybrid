@@ -1,0 +1,15 @@
+{
+  "model": "BaselineCNN",
+  "test_samples": 24676,
+  "accuracy": 0.24230021073107472,
+  "macro_precision": 0.10084832678772934,
+  "macro_recall": 0.10198424977213598,
+  "macro_f1": 0.07738827716996427,
+  "weighted_precision": 0.1546335215779703,
+  "weighted_recall": 0.24230021073107472,
+  "weighted_f1": 0.15449850720204605,
+  "best_validation_accuracy": 0.24,
+  "checkpoint_epoch": 3,
+  "train_limit": 1000,
+  "validation_limit": 200
+}
