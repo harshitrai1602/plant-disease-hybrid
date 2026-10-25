@@ -1,74 +1,82 @@
 # Plant Disease Hybrid Classification
 
-A hybrid plant disease classification project combining **PlantVillage** and **PlantDoc** datasets to develop a multi-class plant disease recognition system. PlantVillage provides controlled plant-leaf imagery, while PlantDoc adds real-world images with more diverse backgrounds and imaging conditions.
+A hybrid plant disease classification project combining the **PlantVillage** and **PlantDoc** datasets to develop a multi-class plant disease recognition system. PlantVillage provides controlled plant-leaf imagery, while PlantDoc contributes images captured under more diverse real-world conditions.
 
-The project uses PyTorch for model development and is designed to compare a baseline CNN with a hybrid classification approach.
+The project uses PyTorch to train a baseline Convolutional Neural Network (CNN) and is designed to compare its performance with a hybrid classification approach.
 
 ## Current Project Status
 
 | Component | Status |
 |---|---|
-| PlantVillage collection | ✅ Completed |
-| PlantDoc collection and extraction | ✅ Completed |
-| Dataset class mapping | ✅ Completed |
-| Unified dataset construction | ✅ Completed |
-| Missing-file validation | ✅ Completed |
-| Exact duplicate detection | ✅ Completed |
-| Stratified train/validation/test splitting | ✅ Completed |
-| Dataset and DataLoader verification | ✅ Completed |
-| Image preprocessing and augmentation tests | ✅ Completed |
-| CUDA GPU verification | ✅ Completed |
-| Baseline CNN implementation | ✅ Completed |
-| Smoke-test training pipeline | ✅ Completed |
-| Full-dataset Baseline CNN training | 🟢 Two epochs completed |
-| Best baseline checkpoint | ✅ Saved |
-| Final baseline test evaluation | ⏳ Pending |
-| Hybrid model implementation | ⏳ Next |
-| Deep feature extraction | ⏳ Pending |
-| Model comparison | ⏳ Pending |
-| Inference API | ⏳ Under development / pending |
-| Frontend | ⏳ Planned |
-| Deployment | ⏳ Planned |
+| PlantVillage dataset collection | Completed |
+| PlantDoc dataset collection and extraction | Completed |
+| Dataset class mapping | Completed |
+| Unified dataset construction | Completed |
+| Missing-file validation | Completed |
+| Exact duplicate detection | Completed |
+| Stratified train/validation/test splitting | Completed |
+| Dataset and DataLoader verification | Completed |
+| Image preprocessing and augmentation tests | Completed |
+| CUDA GPU verification | Completed |
+| Baseline CNN implementation | Completed |
+| Smoke-test training pipeline | Completed |
+| Full-dataset baseline CNN training | 10 epochs completed |
+| Baseline training history | Available |
+| Best baseline checkpoint | Saved |
+| Full-dataset test evaluation | Pending |
+| Hybrid model implementation | Pending |
+| Deep feature extraction | Pending |
+| Baseline-versus-hybrid comparison | Pending |
+| Inference API | Pending |
+| Frontend integration | Planned |
+| Deployment | Planned |
 
-## 1. Final Hybrid Dataset
+## 1. Project Overview
 
-The unified dataset contains **164,501 images across 38 classes**.
+The objective is to classify plant leaf images into 38 canonical plant health and disease categories.
 
-| Dataset component | Count |
+The project workflow includes:
+
+1. Collecting PlantVillage and PlantDoc images.
+2. Mapping source labels to a unified class taxonomy.
+3. Validating image paths and removing exact duplicates.
+4. Creating stratified training, validation, and test splits.
+5. Preprocessing images and verifying PyTorch DataLoaders.
+6. Training a baseline CNN.
+7. Evaluating the selected baseline model on the reserved test set.
+8. Developing and evaluating the hybrid classification approach.
+9. Comparing both models using consistent evaluation metrics.
+10. Integrating the final model into an inference API and frontend.
+
+## 2. Unified Dataset
+
+The prepared dataset contains **164,501 images across 38 classes**.
+
+| Dataset component | Number of images |
 |---|---:|
-| PlantVillage images | 162,853 |
-| PlantDoc images | 1,648 |
-| Total images | 164,501 |
+| PlantVillage | 162,853 |
+| PlantDoc | 1,648 |
+| **Total** | **164,501** |
 | Canonical classes | 38 |
-| Missing image files | 0 |
+| Missing image files detected | 0 |
 | Exact duplicate images removed | 63 |
 
-Only PlantDoc classes that could be mapped reliably to the project's canonical class taxonomy were included.
+PlantVillage supplies most of the images, while PlantDoc adds greater variation in backgrounds and image-capture conditions.
+
+Only source classes that could be reliably mapped to the project's canonical class taxonomy were included.
 
 ### Dataset split
 
-A stratified 70/15/15 split was created.
+A stratified 70/15/15 split was prepared.
 
-| Split | Images | Classes |
+| Split | Number of images | Number of classes |
 |---|---:|---:|
 | Training | 115,150 | 38 |
 | Validation | 24,675 | 38 |
 | Test | 24,676 | 38 |
 | **Total** | **164,501** | **38** |
 
-All 38 classes are represented in each split, and dataset validation confirmed that all referenced image files exist.
-
-## 2. Dataset Sources
-
-### PlantVillage
-
-PlantVillage supplies the majority of the images, covering multiple crops and plant disease categories. Its controlled imagery provides a useful foundation for learning disease-related visual patterns.
-
-### PlantDoc
-
-PlantDoc contributes images captured under more varied real-world conditions. Its inclusion is intended to help investigate model performance beyond controlled backgrounds.
-
-The final dataset combines these sources using a unified class mapping.
+All 38 classes are represented in each split. The test split is reserved for final evaluation and must not be used for training or model selection.
 
 ## 3. Canonical Classes
 
@@ -123,7 +131,7 @@ Potato_healthy
 data/processed/metadata/unified_dataset.csv
 ```
 
-Contains unified metadata for the dataset.
+Contains the unified dataset metadata, including image paths, source dataset, original class labels, canonical labels, and class IDs.
 
 Important columns include:
 
@@ -139,7 +147,7 @@ Important columns include:
 data/processed/metadata/class_mapping.csv
 ```
 
-Contains the mapping from source labels to canonical classes.
+Contains the mapping between source labels and canonical class names.
 
 ### Dataset statistics
 
@@ -155,9 +163,9 @@ Contains dataset and class statistics.
 data/processed/metadata/unified_duplicates.csv
 ```
 
-Contains the results of duplicate-image detection.
+Contains information about detected duplicate images.
 
-### Final data splits
+### Data splits
 
 ```text
 data/processed/splits/train.csv
@@ -165,14 +173,15 @@ data/processed/splits/val.csv
 data/processed/splits/test.csv
 ```
 
-These files define the final training, validation, and test splits.
+These files define the training, validation, and test datasets.
 
 ## 5. Development Environment
 
-The project has been developed in Windows using Visual Studio Code and PowerShell.
+The project was developed on Windows using Visual Studio Code and PowerShell.
 
-| Component | Verified configuration |
+| Component | Configuration |
 |---|---|
+| Operating system | Windows |
 | Python | 3.14.5 |
 | PyTorch | 2.14.1+cu126 |
 | Torchvision | 0.29.1+cu126 |
@@ -182,74 +191,77 @@ The project has been developed in Windows using Visual Studio Code and PowerShel
 | Number of classes | 38 |
 | Optimizer | Adam |
 | Loss function | Cross-entropy loss |
+| Learning rate | 0.001 |
+| Batch size | 4 |
 
-**Hardware note:** The full-dataset training results documented below were produced on the NVIDIA GeForce 930MX. If training is moved to another machine, record that machine's hardware and software versions separately.
+**Hardware note:** Training results in this README were recorded on the NVIDIA GeForce 930MX. Results may differ on other hardware.
 
-### Virtual environment
-
-The project uses a Python virtual environment. The environment directory should not be committed to Git.
+The Python virtual environment is local to the development machine and should not be committed to GitHub.
 
 ## 6. Dataset and Preprocessing Verification
 
-The dataset pipeline was verified before model training.
+Before training, the dataset loading and preprocessing pipeline was tested.
 
-The checks confirmed:
+The verification confirmed that:
 
 - All split CSV files load correctly.
-- No missing image files were detected.
-- All 38 classes are present in each split.
+- No missing image files were detected during dataset validation.
+- All 38 classes are represented in each split.
 - Images and labels load correctly through PyTorch DataLoaders.
-- Image tensors have shape `(3, 224, 224)`.
+- Input image tensors have shape `(3, 224, 224)`.
 - Image tensors use `torch.float32`.
 - Label tensors use `torch.int64`.
 - Tensor values are finite.
 - Training and evaluation transformations execute successfully.
 - Batches can be transferred to the CUDA device.
+- Forward and backward passes execute successfully.
 
-**Status: Dataset loading, preprocessing, and augmentation tests passed.**
+**Status: Dataset loading, preprocessing, and model execution checks passed.**
 
 ## 7. Baseline CNN Architecture
 
-A custom convolutional neural network named `BaselineCNN` has been implemented as the initial classification model.
+The baseline model is a custom convolutional neural network implemented in PyTorch.
 
-### Architecture
+### Architecture overview
 
 The model contains four convolutional stages:
 
-1. Convolution with 32 output channels
-2. Convolution with 64 output channels
-3. Convolution with 128 output channels
-4. Convolution with 256 output channels
+1. Convolutional layer with 32 output channels.
+2. Convolutional layer with 64 output channels.
+3. Convolutional layer with 128 output channels.
+4. Convolutional layer with 256 output channels.
 
-The convolutional stages use batch normalization and ReLU activation, with max pooling in the earlier stages. Adaptive average pooling reduces the final feature map to a fixed-size representation.
+The architecture uses batch normalization and ReLU activation. Max pooling is applied in the earlier stages to reduce spatial dimensions.
 
-The classification head contains:
+Adaptive average pooling converts the final feature map into a fixed-size representation.
+
+The classification head consists of:
 
 - Flattening
 - Dropout with probability 0.3
 - A fully connected layer producing 38 class scores
 
-The model contains approximately **399,142 parameters**.
+The model contains approximately **399,142 trainable parameters**.
 
-A forward pass, loss calculation, and backward pass were successfully verified on the CUDA device.
+### Training configuration
 
-### Relevant files
-
-```text
-baseline_cnn.py
-check_model.py
-dataset_loader.py
-test_preprocessing.py
-train_baseline.py
-train_baseline_full.py
-continue_baseline.py
-```
-
-The scripts cover the baseline architecture, dataset loading, preprocessing verification, smoke testing, full-dataset training, and checkpoint-based continuation. The continuation script is prepared and has completed one continuation run.
+| Parameter | Value |
+|---|---|
+| Model | BaselineCNN |
+| Training images | 115,150 |
+| Validation images | 24,675 |
+| Planned training duration | 20 epochs |
+| Epochs completed | 10 |
+| Batch size | 4 |
+| Learning rate | 0.001 |
+| Optimizer | Adam |
+| Loss function | Cross-entropy loss |
+| Input resolution | 224 × 224 |
+| Device | NVIDIA GeForce 930MX |
 
 ## 8. Smoke-Test Training
 
-Before full-dataset training, the training pipeline was tested on a smaller subset to verify that training, validation, checkpoint saving, and report generation worked end to end.
+Before full-dataset training, a small smoke test was conducted to verify the training pipeline.
 
 | Parameter | Value |
 |---|---:|
@@ -259,9 +271,9 @@ Before full-dataset training, the training pipeline was tested on a smaller subs
 | Batch size | 4 |
 | Learning rate | 0.001 |
 | Best validation accuracy | 24.00% |
-| Test accuracy | 24.23% |
+| Test accuracy in smoke test | 24.23% |
 
-These results are from the smoke test only. They are not the final benchmark because the model was trained on a small subset.
+These results belong to the preliminary smoke test and are not the final benchmark for the full-dataset model.
 
 The smoke-test artifacts are stored in:
 
@@ -269,46 +281,64 @@ The smoke-test artifacts are stored in:
 outputs/baseline_cnn/
 ```
 
-The test results from this preliminary run must not be presented as the final test performance of the full-dataset model.
+## 9. Full-Dataset Baseline CNN Training
 
-## 9. Full-Dataset Baseline Training
+The baseline CNN was trained using all 115,150 training images and evaluated against all 24,675 validation images during each recorded epoch.
 
-The Baseline CNN was trained using all 115,150 training images and validated using all 24,675 validation images.
+Training history is stored in:
 
-### Training configuration
+```text
+outputs/baseline_cnn_full/training_history.csv
+```
 
-| Parameter | Value |
-|---|---|
-| Model | BaselineCNN |
-| Training images | 115,150 |
-| Validation images | 24,675 |
-| Completed epochs | 2 |
-| Batch size | 4 |
-| Learning rate | 0.001 |
-| Optimizer | Adam |
-| Loss function | Cross-entropy loss |
-| Input resolution | 224 × 224 |
-| Device | NVIDIA GeForce 930MX |
+### Complete training results: Epochs 1–10
 
-### Training history
+The following results are taken from the recorded training history.
 
-| Metric | Epoch 1 | Epoch 2 |
+| Epoch | Training Loss | Training Accuracy | Validation Loss | Validation Accuracy | Duration (seconds) |
+|---:|---:|---:|---:|---:|---:|
+| 1 | 1.714159 | 51.35% | 0.781721 | 77.42% | 6121.67 |
+| 2 | 0.817357 | 75.44% | 0.503964 | 86.49% | 6141.33 |
+| 3 | 0.571830 | 82.69% | 0.417845 | 88.77% | 6129.22 |
+| 4 | 0.452984 | 86.29% | 0.371728 | 90.05% | 6092.54 |
+| 5 | 0.379222 | 88.53% | 0.327342 | 91.38% | 6076.53 |
+| 6 | 0.326542 | 90.20% | 0.309455 | 92.11% | 6097.88 |
+| 7 | 0.286395 | 91.39% | 0.300899 | 92.54% | 6028.05 |
+| 8 | 0.255193 | 92.39% | **0.297089** | 92.74% | 6083.22 |
+| 9 | 0.228878 | 93.11% | 0.304231 | 92.83% | 6053.57 |
+| 10 | **0.207024** | **93.81%** | 0.307952 | **93.05%** | 6115.12 |
+
+*Accuracy values are converted from the recorded decimal values to percentages. Training durations are rounded to two decimal places.*
+
+### Training progress summary
+
+| Metric | Epoch 1 | Epoch 10 |
 |---|---:|---:|
-| Training loss | 1.7142 | 0.8174 |
-| Training accuracy | 51.35% | 75.44% |
-| Validation loss | 0.7817 | 0.5040 |
-| Validation accuracy | 77.42% | 86.49% |
-| Epoch duration | 6,121.7 s | 6,141.3 s |
+| Training loss | 1.714159 | 0.207024 |
+| Training accuracy | 51.35% | 93.81% |
+| Validation loss | 0.781721 | 0.307952 |
+| Validation accuracy | 77.42% | 93.05% |
 
-### Current baseline result
+The training loss decreased from 1.714159 to 0.207024 over the first 10 epochs. Training accuracy increased from 51.35% to 93.81%.
 
-**Best validation accuracy: 86.49%**
+Validation accuracy improved from 77.42% in Epoch 1 to 93.05% in Epoch 10.
 
-The second epoch improved validation accuracy by approximately 9.07 percentage points. Both training and validation losses decreased between the two epochs.
+### Best recorded validation metrics
 
-These results indicate encouraging progress, but further validation monitoring is needed before determining whether more training is beneficial.
+- **Highest validation accuracy:** 93.05%, achieved in Epoch 10.
+- **Lowest validation loss:** 0.297089, achieved in Epoch 8.
+- **Training accuracy at Epoch 10:** 93.81%.
+- **Training loss at Epoch 10:** 0.207024.
 
-**Important:** The 86.49% figure is validation accuracy, not test accuracy.
+The lowest validation loss and highest validation accuracy occurred in different epochs. This is possible because loss and accuracy measure different aspects of model performance.
+
+Validation loss increased slightly in Epochs 9 and 10 even as validation accuracy improved. This should be monitored during further training because it may indicate emerging overfitting or changes in prediction confidence.
+
+### Training time
+
+Each epoch took approximately 100–103 minutes on the recorded hardware.
+
+The total recorded training time across the first 10 epochs was approximately **16.91 hours**.
 
 ### Training output directory
 
@@ -316,285 +346,298 @@ These results indicate encouraging progress, but further validation monitoring i
 outputs/baseline_cnn_full/
 ```
 
-The directory contains the best model checkpoint and the training history and curve artifacts generated by the training scripts.
+The directory contains the baseline training artifacts, including the training history, training curves, and saved model checkpoint, depending on the outputs produced by the training scripts.
 
-### Checkpoint details
+### Checkpoint
 
-The best checkpoint is saved at:
+The best model checkpoint is saved at:
 
 ```text
 outputs/baseline_cnn_full/best_model.pth
 ```
 
-The checkpoint contains:
+The training script uses validation performance to select the best checkpoint. Confirm the saved checkpoint's epoch and selection criterion before using it for final evaluation.
 
-- Model state dictionary
-- Optimizer state dictionary
-- Best validation accuracy
-- Epoch number
-- Number of classes
-- Class names
-- Random seed
+**Important:** The reported 93.05% is validation accuracy, not test accuracy. Final performance must be measured on the reserved test set.
 
-The continuation run loaded the existing model and optimizer states and saved an updated best checkpoint after validation accuracy improved.
+## 10. Training Curves
 
-## 10. Current Model Evaluation Status
+The training curves can be inspected at:
 
-The following evaluation steps remain pending for the full-dataset baseline:
+```text
+outputs/baseline_cnn_full/training_curves.png
+```
 
-- Final evaluation on the reserved test split
-- Overall test accuracy
-- Macro precision, recall, and F1-score
-- Weighted precision, recall, and F1-score
-- Per-class classification metrics
-- Confusion matrix
-- Error analysis
-- Final comparison with the hybrid model
+The plots should be used to observe:
 
-The test set was intentionally excluded from the full-dataset training and continuation runs.
+- Changes in training loss over the epochs.
+- Changes in validation loss over the epochs.
+- Improvements in training accuracy.
+- Improvements in validation accuracy.
+- Possible divergence between training and validation performance.
 
-Model selection and training decisions should be based on the training and validation splits. The reserved test set should be used for final evaluation after model selection.
+The recorded history shows consistent improvement in training accuracy. Validation accuracy also improves across the 10 recorded epochs, while validation loss reaches its minimum in Epoch 8 and increases slightly afterward.
 
-## 11. Current ML Pipeline
+## 11. Current Model Evaluation Status
 
-The current workflow is:
+The full-dataset baseline has completed 10 recorded training epochs. The following tasks remain pending:
+
+- Final evaluation on the reserved test split.
+- Overall test accuracy.
+- Macro precision, recall, and F1-score.
+- Weighted precision, recall, and F1-score.
+- Per-class classification report.
+- Confusion matrix.
+- Error analysis.
+- Final comparison against the hybrid model.
+
+The reserved test set must remain separate from model training and checkpoint selection. Use the training and validation splits for development decisions, then evaluate the selected model on the test split.
+
+## 12. Planned Hybrid Classification Approach
+
+The project's next major objective is to develop and evaluate the hybrid classification model.
+
+The exact hybrid architecture should be finalized before implementation. One possible approach is to use a trained CNN as a feature extractor and train a downstream classifier, such as a Support Vector Machine (SVM), using the extracted deep features.
+
+If the CNN + SVM approach is selected, the workflow will be:
+
+1. Load the chosen trained CNN checkpoint.
+2. Remove or bypass its final classification layer to obtain deep feature vectors.
+3. Extract features for the training and validation images.
+4. Train the SVM using training features and labels.
+5. Select the downstream classifier configuration using validation performance.
+6. Evaluate the final hybrid pipeline on the reserved test set.
+7. Compare its performance with the baseline CNN.
+
+The selected CNN feature extractor should remain fixed while extracting features for a given SVM experiment. If the CNN checkpoint changes, the features should be extracted again for a fair and consistent experiment.
+
+## 13. Model Comparison Plan
+
+The baseline and hybrid approaches should be evaluated on the same held-out test split.
+
+The planned comparison includes:
+
+| Evaluation metric | Purpose |
+|---|---|
+| Accuracy | Measures overall classification correctness |
+| Macro precision | Measures precision averaged equally across classes |
+| Macro recall | Measures recall averaged equally across classes |
+| Macro F1-score | Measures class-balanced F1 performance |
+| Weighted F1-score | Accounts for class support |
+| Per-class metrics | Identifies classes with weaker performance |
+| Confusion matrix | Shows patterns of misclassification |
+| Inference time | Compares prediction speed |
+| Computational requirements | Documents resource usage |
+
+Final results should be reported only after the corresponding evaluations have been completed. No final test score or hybrid-model performance is claimed at this stage.
+
+## 14. Current Machine Learning Pipeline
 
 ```text
 PlantVillage + PlantDoc
-          ↓
-Dataset Cleaning
-          ↓
-Class Mapping
-          ↓
-Duplicate Detection
-          ↓
+          |
+          v
+Dataset Cleaning and Validation
+          |
+          v
+Canonical Class Mapping
+          |
+          v
+Exact Duplicate Detection
+          |
+          v
 Unified 38-Class Dataset
-          ↓
-Stratified 70/15/15 Split
-          ↓
+          |
+          v
+Stratified Train/Validation/Test Split
+          |
+          v
 Dataset and Preprocessing Verification
-          ↓
+          |
+          v
 Baseline CNN Training
-          ↓
+          |
+          v
 Validation and Checkpoint Selection
-          ↓
-Final Baseline Test Evaluation
-          ↓
-Hybrid Architecture Development
-          ↓
-Deep Feature Extraction / Hybrid Classification
-          ↓
-Model Comparison and Error Analysis
-          ↓
+          |
+          v
+Baseline Test Evaluation
+          |
+          v
+Hybrid Model Development
+          |
+          v
+Feature Extraction / Hybrid Classification
+          |
+          v
+Baseline-versus-Hybrid Comparison
+          |
+          v
 Inference API
-          ↓
+          |
+          v
 Frontend Integration
-          ↓
+          |
+          v
 Deployment
 ```
 
-## 12. Project Structure
+## 15. Project Structure
 
-The relevant project structure is:
+The following is a documentation-oriented view of the relevant project files. Verify the actual directory contents before assuming every listed path exists.
 
 ```text
 plant-disease-hybrid/
-│
-├── backend/
-│   └── ml_api/
-│       ├── inference.py
-│       └── main.py
-│
-├── configs/
-│   └── config.yaml
-│
-├── data/
-│   ├── raw/
-│   └── processed/
-│       ├── metadata/
-│       │   ├── unified_dataset.csv
-│       │   ├── class_mapping.csv
-│       │   ├── hybrid_dataset_statistics.csv
-│       │   └── unified_duplicates.csv
-│       └── splits/
-│           ├── train.csv
-│           ├── val.csv
-│           └── test.csv
-│
-├── evaluation/
-│   └── reports/
-│
-├── models/
-│   └── cnn/
-│
-├── outputs/
-│   ├── baseline_cnn/
-│   └── baseline_cnn_full/
-│
-├── scripts/
-│   └── inspect_dataset.py
-│
-├── src/
-│   ├── data/
-│   │   ├── clean_dataset.py
-│   │   └── prepare_splits.py
-│   └── models/
-│       ├── cnn_backbones.py
-│       ├── extract_deep_features.py
-│       └── train_cnn.py
-│
-├── baseline_cnn.py
-├── dataset_loader.py
-├── test_preprocessing.py
-├── check_model.py
-├── train_baseline.py
-├── train_baseline_full.py
-├── continue_baseline.py
-├── .gitignore
-└── README.md
+|
+|-- backend/
+|   `-- ml_api/
+|       |-- inference.py
+|       `-- main.py
+|
+|-- configs/
+|   `-- config.yaml
+|
+|-- data/
+|   |-- raw/
+|   `-- processed/
+|       |-- metadata/
+|       |   |-- unified_dataset.csv
+|       |   |-- class_mapping.csv
+|       |   |-- hybrid_dataset_statistics.csv
+|       |   `-- unified_duplicates.csv
+|       `-- splits/
+|           |-- train.csv
+|           |-- val.csv
+|           `-- test.csv
+|
+|-- evaluation/
+|   `-- reports/
+|
+|-- models/
+|   `-- cnn/
+|
+|-- outputs/
+|   |-- baseline_cnn/
+|   `-- baseline_cnn_full/
+|       |-- training_history.csv
+|       |-- training_curves.png
+|       `-- best_model.pth
+|
+|-- scripts/
+|   `-- inspect_dataset.py
+|
+|-- src/
+|   |-- data/
+|   |   |-- clean_dataset.py
+|   |   `-- prepare_splits.py
+|   `-- models/
+|       |-- cnn_backbones.py
+|       |-- extract_deep_features.py
+|       `-- train_cnn.py
+|
+|-- baseline_cnn.py
+|-- dataset_loader.py
+|-- test_preprocessing.py
+|-- check_model.py
+|-- train_baseline.py
+|-- train_baseline_full.py
+|-- continue_baseline.py
+|-- .gitignore
+`-- README.md
 ```
 
-This is a documentation view of the project structure; verify the actual directory contents before assuming every listed path exists in the repository.
+## 16. Reproducibility and GitHub
 
-## 13. Next Development Tasks
+Avoid committing large datasets, virtual environments, or model binaries unless the project explicitly requires them.
 
-### Task 1: Review baseline training
-
-- Inspect `training_history.csv` and `training_curves.png`.
-- Decide whether another training epoch is worthwhile.
-- Preserve the best checkpoint.
-- Avoid restarting training from scratch unnecessarily.
-
-### Task 2: Complete baseline evaluation
-
-- Load the selected checkpoint.
-- Evaluate it on the reserved test split.
-- Generate overall and per-class metrics.
-- Save the classification report and confusion matrix.
-- Document test results separately from validation results.
-
-### Task 3: Implement the hybrid model
-
-The project is intended to compare the baseline CNN against a hybrid classification approach.
-
-Before implementation, finalize the architecture. Depending on the project's approved design, this may combine a CNN backbone with an attention mechanism, a Transformer, or a feature-based classifier.
-
-The hybrid model should:
-
-- Use the same 38-class taxonomy.
-- Use the established training and validation splits.
-- Save its own checkpoints and logs.
-- Be evaluated using the same metrics as the baseline.
-- Avoid overwriting the baseline artifacts.
-
-### Task 4: Deep feature extraction
-
-If required by the chosen hybrid architecture:
-
-- Extract deep feature vectors using the trained backbone.
-- Save features and their corresponding labels.
-- Train the selected downstream classifier using training features.
-- Use validation features for model selection.
-- Reserve test features for final evaluation.
-
-### Task 5: Compare model performance
-
-Compare the baseline and hybrid approaches using:
-
-- Accuracy
-- Macro precision
-- Macro recall
-- Macro F1-score
-- Weighted F1-score
-- Per-class performance
-- Confusion matrices
-- Inference time and computational requirements
-
-Use consistent data splits and evaluation procedures for a fair comparison.
-
-### Task 6: API and application integration
-
-After the model and inference pipeline are stable:
-
-- Integrate model loading and preprocessing into the inference API.
-- Validate uploaded image handling.
-- Return the predicted class and relevant confidence scores.
-- Connect the frontend.
-- Test the complete prediction workflow.
-- Prepare deployment documentation.
-
-## 14. Git and Reproducibility Rules
-
-Do not commit large datasets, virtual environments, or generated model binaries unless the project explicitly requires them.
-
-Recommended exclusions include:
+A recommended `.gitignore` configuration is:
 
 ```gitignore
-data/raw/
+# Virtual environments
 .venv/
+venv/
+
+# Python cache
 __pycache__/
-*.pyc
+*.py[cod]
+
+# Secrets
+.env
+
+# Raw datasets
+data/raw/
+
+# Model checkpoints
 *.pth
 *.pt
 *.ckpt
 ```
 
-The repository should contain the code, configuration, dataset metadata, split definitions, documentation, and relevant reports required to reproduce the pipeline.
+If these files have already been committed, adding them to `.gitignore` alone will not remove them from Git tracking.
 
-Keep a record of:
+When moving the project to another computer, install the required dependencies in a new virtual environment and update any dataset paths that point to machine-specific locations.
 
-- Python and library versions
-- GPU model
-- Dataset split definitions
-- Training configuration
-- Random seed
-- Model checkpoints and validation results
-- Final test results
+Record the following for reproducibility:
 
-Because the CSV files may contain local absolute paths, verify or configure dataset paths when cloning the project onto another machine.
+- Python and library versions.
+- GPU model and CUDA availability.
+- Dataset version and split definitions.
+- Model architecture and training configuration.
+- Random seed.
+- Training history and checkpoint selection criterion.
+- Final test results.
+- Hybrid-model configuration and evaluation results.
 
-## 15. Development Milestones
+## 17. Next Development Milestones
 
-### Completed
+### Milestone 1: Baseline training review
 
-- PlantVillage and PlantDoc integration
-- Unified 38-class dataset construction
-- Missing-file validation
-- Exact duplicate detection
-- Stratified train/validation/test splits
-- Dataset and DataLoader verification
-- Preprocessing and augmentation tests
-- CUDA verification
-- Baseline CNN implementation
-- Smoke-test pipeline
-- Two full-dataset baseline training epochs
-- Checkpoint-based continuation
-- Best baseline validation accuracy of 86.49%
+- Review all 10 recorded epochs.
+- Inspect `training_history.csv` and `training_curves.png`.
+- Confirm the epoch associated with `best_model.pth`.
+- Decide whether to continue training toward the planned 20 epochs.
+- Preserve existing checkpoints and logs.
 
-### In progress / next
+### Milestone 2: Baseline test evaluation
 
-- Baseline training review
-- Final baseline test evaluation
-- Hybrid architecture implementation
-- Deep feature extraction, if required
-- Hybrid model training
-- Baseline-versus-hybrid comparison
-- Detailed evaluation and error analysis
+- Load the selected CNN checkpoint.
+- Evaluate the model on the reserved test split.
+- Generate accuracy, precision, recall, and F1-score metrics.
+- Save the per-class report and confusion matrix.
+- Document test results separately from validation results.
 
-### Planned
+### Milestone 3: Hybrid model development
 
-- Inference API completion
-- Frontend integration
-- End-to-end application testing
-- Deployment
-- Final project report
+- Finalize the hybrid architecture.
+- Implement the selected feature-extraction or hybrid-classification pipeline.
+- Save separate checkpoints and experiment logs.
+- Tune model choices using validation data only.
+
+### Milestone 4: Performance comparison
+
+- Evaluate the selected hybrid model on the same test split.
+- Compare the baseline and hybrid metrics.
+- Analyze per-class errors and confusion patterns.
+- Record inference time and computational requirements.
+
+### Milestone 5: Application integration
+
+- Complete the inference pipeline.
+- Integrate image preprocessing and model loading into the API.
+- Return predicted classes and appropriate confidence information.
+- Connect the frontend.
+- Test the complete image-prediction workflow.
+- Prepare deployment and final project documentation.
 
 ## Conclusion
 
-The dataset preparation phase is complete, and the first full-dataset Baseline CNN has been successfully trained for two epochs. It currently achieves **86.49% validation accuracy**, with its best checkpoint saved under `outputs/baseline_cnn_full/`.
+The dataset preparation and validation stages are complete, and the baseline CNN has completed **10 full-dataset training epochs**.
 
-The next milestone is to review the baseline learning curves, perform final test evaluation after model selection, and develop the hybrid classification architecture. The final test performance and baseline-versus-hybrid comparison have not yet been established.
+At Epoch 10, the model achieved **93.81% training accuracy and 93.05% validation accuracy**. The lowest recorded validation loss was **0.297089 at Epoch 8**.
 
-**Current milestone: Baseline CNN training — two epochs completed.**
+The next milestones are to review the saved checkpoint, complete the baseline's held-out test evaluation, and implement the hybrid classification approach. A final test score and a baseline-versus-hybrid comparison have not yet been established.
 
-**Next milestone: Final baseline evaluation and hybrid model development.**
+**Current milestone:** Baseline CNN training — 10 epochs completed.
+
+**Next milestone:** Checkpoint verification, baseline test evaluation, and hybrid model development.
+*
