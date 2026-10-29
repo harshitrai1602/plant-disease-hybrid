@@ -1,86 +1,82 @@
 # Plant Disease Hybrid Classification
 
-A hybrid plant disease classification project combining the **PlantVillage** and **PlantDoc** datasets to develop a multi-class plant disease recognition system. PlantVillage provides controlled plant-leaf imagery, while PlantDoc contributes images captured under more diverse real-world conditions.
+A multi-class plant disease recognition project combining **PlantVillage** and **PlantDoc** datasets. The project uses a PyTorch Convolutional Neural Network (CNN) as a baseline and a hybrid **CNN feature extractor + Support Vector Machine (SVM)** classifier for comparison.
 
-The project uses PyTorch to train a baseline Convolutional Neural Network (CNN) and is designed to compare its performance with a hybrid classification approach.
+The unified dataset contains 164,501 images across 38 canonical plant health and disease classes.
 
 ## Current Project Status
 
-| Component | Status |
-|---|---|
-| PlantVillage dataset collection | Completed |
-| PlantDoc dataset collection and extraction | Completed |
-| Dataset class mapping | Completed |
-| Unified dataset construction | Completed |
-| Missing-file validation | Completed |
-| Exact duplicate detection | Completed |
-| Stratified train/validation/test splitting | Completed |
-| Dataset and DataLoader verification | Completed |
-| Image preprocessing and augmentation tests | Completed |
-| CUDA GPU verification | Completed |
-| Baseline CNN implementation | Completed |
-| Smoke-test training pipeline | Completed |
-| Full-dataset baseline CNN training | 10 epochs completed |
-| Baseline training history | Available |
-| Best baseline checkpoint | Saved |
-| Full-dataset test evaluation | Pending |
-| Hybrid model implementation | Pending |
-| Deep feature extraction | Pending |
-| Baseline-versus-hybrid comparison | Pending |
-| Inference API | Pending |
-| Frontend integration | Planned |
-| Deployment | Planned |
+| Component                                  | Status                                                             |
+| ------------------------------------------ | ------------------------------------------------------------------ |
+| PlantVillage and PlantDoc collection       | Completed                                                          |
+| Dataset class mapping and unification      | Completed                                                          |
+| Missing-file validation                    | Completed                                                          |
+| Exact duplicate detection                  | Completed                                                          |
+| Stratified train/validation/test splitting | Completed                                                          |
+| Dataset and DataLoader verification        | Completed                                                          |
+| Image preprocessing and augmentation tests | Completed                                                          |
+| Baseline CNN training                      | 20 epochs recorded                                                 |
+| Baseline checkpoint                        | Saved                                                              |
+| Hybrid CNN feature extraction              | Completed                                                          |
+| Initial CNN + SVM model                    | Completed                                                          |
+| SVM hyperparameter comparison              | Completed                                                          |
+| Hybrid test evaluation                     | Completed                                                          |
+| Baseline held-out test evaluation          | Verify and document separately                                     |
+| Baseline-versus-hybrid comparison          | Preliminary comparison available; verify preprocessing consistency |
+| Inference API                              | Pending                                                            |
+| Frontend integration                       |  Not Planned yet                                                            |
+| Deployment                                 |  Not Planned yet                                                            |
 
 ## 1. Project Overview
 
 The objective is to classify plant leaf images into 38 canonical plant health and disease categories.
 
+PlantVillage contributes predominantly controlled-condition images, while PlantDoc introduces greater variation in backgrounds and image-capture conditions.
+
 The project workflow includes:
 
-1. Collecting PlantVillage and PlantDoc images.
-2. Mapping source labels to a unified class taxonomy.
-3. Validating image paths and removing exact duplicates.
-4. Creating stratified training, validation, and test splits.
-5. Preprocessing images and verifying PyTorch DataLoaders.
-6. Training a baseline CNN.
-7. Evaluating the selected baseline model on the reserved test set.
-8. Developing and evaluating the hybrid classification approach.
-9. Comparing both models using consistent evaluation metrics.
-10. Integrating the final model into an inference API and frontend.
+1. Collecting and validating the datasets.
+2. Mapping source labels to a unified taxonomy.
+3. Removing exact duplicate images.
+4. Creating stratified train, validation, and test splits.
+5. Training and evaluating a baseline CNN.
+6. Extracting deep features using the trained CNN.
+7. Training an SVM on the extracted features.
+8. Selecting SVM hyperparameters using validation performance.
+9. Evaluating the selected hybrid model on the reserved test split.
+10. Comparing model performance and preparing application integration.
 
 ## 2. Unified Dataset
 
 The prepared dataset contains **164,501 images across 38 classes**.
 
-| Dataset component | Number of images |
-|---|---:|
-| PlantVillage | 162,853 |
-| PlantDoc | 1,648 |
-| **Total** | **164,501** |
-| Canonical classes | 38 |
-| Missing image files detected | 0 |
-| Exact duplicate images removed | 63 |
+| Dataset component              | Number of images |
+| ------------------------------ | ---------------: |
+| PlantVillage                   |          162,853 |
+| PlantDoc                       |            1,648 |
+| Total images                   |          164,501 |
+| Canonical classes              |               38 |
+| Missing image files detected   |                0 |
+| Exact duplicate images removed |               63 |
 
-PlantVillage supplies most of the images, while PlantDoc adds greater variation in backgrounds and image-capture conditions.
-
-Only source classes that could be reliably mapped to the project's canonical class taxonomy were included.
+Only source classes that could be reliably mapped to the project's canonical taxonomy were included.
 
 ### Dataset split
 
 A stratified 70/15/15 split was prepared.
 
-| Split | Number of images | Number of classes |
-|---|---:|---:|
-| Training | 115,150 | 38 |
-| Validation | 24,675 | 38 |
-| Test | 24,676 | 38 |
-| **Total** | **164,501** | **38** |
+| Split      |      Images | Classes |
+| ---------- | ----------: | ------: |
+| Training   |     115,150 |      38 |
+| Validation |      24,675 |      38 |
+| Test       |      24,676 |      38 |
+| **Total**  | **164,501** |  **38** |
 
-All 38 classes are represented in each split. The test split is reserved for final evaluation and must not be used for training or model selection.
+The test split is reserved for final evaluation. It must not be used for model training or hyperparameter selection.
 
 ## 3. Canonical Classes
 
-The dataset contains the following 38 classes:
+The dataset contains these 38 classes:
 
 ```text
 Orange_HLB
@@ -131,7 +127,7 @@ Potato_healthy
 data/processed/metadata/unified_dataset.csv
 ```
 
-Contains the unified dataset metadata, including image paths, source dataset, original class labels, canonical labels, and class IDs.
+Contains image paths, source datasets, original class labels, canonical labels, and class IDs.
 
 Important columns include:
 
@@ -141,29 +137,15 @@ Important columns include:
 - `label`
 - `class_id`
 
-### Class mapping
+### Other metadata
 
 ```text
 data/processed/metadata/class_mapping.csv
-```
-
-Contains the mapping between source labels and canonical class names.
-
-### Dataset statistics
-
-```text
 data/processed/metadata/hybrid_dataset_statistics.csv
-```
-
-Contains dataset and class statistics.
-
-### Duplicate report
-
-```text
 data/processed/metadata/unified_duplicates.csv
 ```
 
-Contains information about detected duplicate images.
+These files contain label mappings, dataset statistics, and duplicate-detection information.
 
 ### Data splits
 
@@ -173,67 +155,64 @@ data/processed/splits/val.csv
 data/processed/splits/test.csv
 ```
 
-These files define the training, validation, and test datasets.
+These files define the training, validation, and test sets. Keep them unchanged when comparing the baseline and hybrid models.
 
 ## 5. Development Environment
 
-The project was developed on Windows using Visual Studio Code and PowerShell.
+The project uses Windows, Visual Studio Code, PowerShell, Python, PyTorch, and scikit-learn.
 
-| Component | Configuration |
-|---|---|
-| Operating system | Windows |
-| Python | 3.14.5 |
-| PyTorch | 2.14.1+cu126 |
-| Torchvision | 0.29.1+cu126 |
-| GPU | NVIDIA GeForce 930MX |
-| CUDA availability | Verified |
-| Input resolution | 224 × 224 |
-| Number of classes | 38 |
-| Optimizer | Adam |
-| Loss function | Cross-entropy loss |
-| Learning rate | 0.001 |
-| Batch size | 4 |
+| Component              | Configuration                                  |
+| ---------------------- | ---------------------------------------------- |
+| Operating system       | Windows                                        |
+| Python                 | 3.14.5, as recorded in project documentation   |
+| PyTorch                | Version recorded by the experiment environment |
+| Torchvision            | Version recorded by the experiment environment |
+| Input resolution       | 224 × 224                                      |
+| Number of classes      | 38                                             |
+| Baseline optimizer     | Adam                                           |
+| Baseline loss          | Cross-entropy                                  |
+| Baseline learning rate | 0.001                                          |
+| Baseline batch size    | 4                                              |
+| Hybrid classifier      | LinearSVC                                      |
+| SVM feature scaling    | StandardScaler                                 |
 
-**Hardware note:** Training results in this README were recorded on the NVIDIA GeForce 930MX. Results may differ on other hardware.
+**Hardware note:** Record the actual device used for each experiment. CUDA availability and the GPU used during training should be verified from that run's logs rather than assumed to be identical across computers.
 
-The Python virtual environment is local to the development machine and should not be committed to GitHub.
+The virtual environment is local to each machine and should not be committed to GitHub.
 
 ## 6. Dataset and Preprocessing Verification
 
-Before training, the dataset loading and preprocessing pipeline was tested.
+The dataset and preprocessing pipeline was tested before full training.
 
-The verification confirmed that:
+The verification covered:
 
-- All split CSV files load correctly.
-- No missing image files were detected during dataset validation.
-- All 38 classes are represented in each split.
-- Images and labels load correctly through PyTorch DataLoaders.
-- Input image tensors have shape `(3, 224, 224)`.
-- Image tensors use `torch.float32`.
-- Label tensors use `torch.int64`.
-- Tensor values are finite.
-- Training and evaluation transformations execute successfully.
-- Batches can be transferred to the CUDA device.
-- Forward and backward passes execute successfully.
+- Loading the split CSV files.
+- Checking image paths.
+- Confirming class coverage across splits.
+- Loading images and labels through PyTorch DataLoaders.
+- Checking image tensor shape `(3, 224, 224)`.
+- Checking image tensor dtype `torch.float32`.
+- Checking label tensor dtype `torch.int64`.
+- Checking tensor values for finite numbers.
+- Executing training and evaluation transformations.
+- Verifying model forward and backward passes.
 
-**Status: Dataset loading, preprocessing, and model execution checks passed.**
+The project also recorded successful dataset and preprocessing checks.
 
 ## 7. Baseline CNN Architecture
 
-The baseline model is a custom convolutional neural network implemented in PyTorch.
+The baseline is a custom PyTorch CNN named `BaselineCNN`.
 
-### Architecture overview
+### Architecture
 
-The model contains four convolutional stages:
+The network contains four convolutional stages with output channels:
 
-1. Convolutional layer with 32 output channels.
-2. Convolutional layer with 64 output channels.
-3. Convolutional layer with 128 output channels.
-4. Convolutional layer with 256 output channels.
+1. 32 channels
+2. 64 channels
+3. 128 channels
+4. 256 channels
 
-The architecture uses batch normalization and ReLU activation. Max pooling is applied in the earlier stages to reduce spatial dimensions.
-
-Adaptive average pooling converts the final feature map into a fixed-size representation.
+The architecture uses convolutional layers, batch normalization, ReLU activations, and max pooling in the earlier stages. Adaptive average pooling produces a fixed-size feature representation.
 
 The classification head consists of:
 
@@ -241,195 +220,296 @@ The classification head consists of:
 - Dropout with probability 0.3
 - A fully connected layer producing 38 class scores
 
-The model contains approximately **399,142 trainable parameters**.
+The model contains approximately **399,142 trainable parameters**, according to the project architecture record.
 
 ### Training configuration
 
-| Parameter | Value |
-|---|---|
-| Model | BaselineCNN |
-| Training images | 115,150 |
-| Validation images | 24,675 |
-| Planned training duration | 20 epochs |
-| Epochs completed | 10 |
-| Batch size | 4 |
-| Learning rate | 0.001 |
-| Optimizer | Adam |
-| Loss function | Cross-entropy loss |
-| Input resolution | 224 × 224 |
-| Device | NVIDIA GeForce 930MX |
+| Parameter         | Value         |
+| ----------------- | ------------- |
+| Model             | BaselineCNN   |
+| Training images   | 115,150       |
+| Validation images | 24,675        |
+| Recorded epochs   | 20            |
+| Batch size        | 4             |
+| Learning rate     | 0.001         |
+| Optimizer         | Adam          |
+| Loss function     | Cross-entropy |
+| Input resolution  | 224 × 224     |
 
-## 8. Smoke-Test Training
+## 8. Full-Dataset Baseline CNN Training
 
-Before full-dataset training, a small smoke test was conducted to verify the training pipeline.
+The baseline CNN was trained for **20 recorded epochs**. The training history contains training loss, training accuracy, validation loss, validation accuracy, and elapsed time per epoch.
 
-| Parameter | Value |
-|---|---:|
-| Training subset | 1,000 images |
-| Validation subset | 200 images |
-| Epochs | 3 |
-| Batch size | 4 |
-| Learning rate | 0.001 |
-| Best validation accuracy | 24.00% |
-| Test accuracy in smoke test | 24.23% |
-
-These results belong to the preliminary smoke test and are not the final benchmark for the full-dataset model.
-
-The smoke-test artifacts are stored in:
+Training history:
 
 ```text
-outputs/baseline_cnn/
+outputs/baseline_cnn_retrained/training_history.csv
 ```
 
-## 9. Full-Dataset Baseline CNN Training
+### Complete training history
 
-The baseline CNN was trained using all 115,150 training images and evaluated against all 24,675 validation images during each recorded epoch.
+| Epoch | Train Loss | Train Accuracy |      Val Loss | Val Accuracy | Duration (s) |
+| ----: | ---------: | -------------: | ------------: | -----------: | -----------: |
+|     1 |  1.4561616 |         58.18% |     0.7468221 |       78.75% |      7431.21 |
+|     2 |  0.7605283 |         76.91% |     0.4972142 |       85.59% |      6644.92 |
+|     3 |  0.5638184 |         82.85% |     0.3969425 |       88.58% |      6407.29 |
+|     4 |  0.4580436 |         85.87% |     0.3329189 |       90.04% |      6516.69 |
+|     5 |  0.3939223 |         87.85% |     0.2599354 |       92.31% |      6501.87 |
+|     6 |  0.3539882 |         89.06% |     0.2971917 |       90.97% |      6458.10 |
+|     7 |  0.3193868 |         90.07% |     0.2168564 |       93.25% |      6444.67 |
+|     8 |  0.2922549 |         90.99% |     0.1886616 |       94.43% |      6524.96 |
+|     9 |  0.2714475 |         91.52% |     0.2205243 |       93.17% |      7240.53 |
+|    10 |  0.2572454 |         92.04% |     0.2009383 |       93.81% |      6666.68 |
+|    11 |  0.2410960 |         92.42% |     0.1611719 |       95.08% |      7620.03 |
+|    12 |  0.2315910 |         92.77% |     0.1536519 |       95.43% |      6574.57 |
+|    13 |  0.2203640 |         93.11% |     0.1415694 |       95.79% |      6403.88 |
+|    14 |  0.2092829 |         93.43% |     0.1764299 |       94.38% |      6398.92 |
+|    15 |  0.2035673 |         93.51% |     0.1334466 |       95.99% |      6389.38 |
+|    16 |  0.1944735 |         93.83% |     0.1340617 |       95.91% |      6420.04 |
+|    17 |  0.1875102 |         94.08% | **0.1273499** |   **96.36%** |      6568.27 |
+|    18 |  0.1863113 |         94.16% |     0.1415347 |       95.68% |      6529.21 |
+|    19 |  0.1790769 |         94.39% |     0.1366558 |       95.81% |      6523.25 |
+|    20 |  0.1725044 |     **94.54%** |     0.1324786 |       96.02% |      6410.56 |
 
-Training history is stored in:
+*Accuracy is shown as a percentage; loss and duration are rounded for readability.*
 
-```text
-outputs/baseline_cnn_full/training_history.csv
-```
+### Training results
 
-### Complete training results: Epochs 1–10
+- **Highest recorded validation accuracy:** 96.3607%, Epoch 17.
+- **Lowest recorded validation loss:** 0.1273499, Epoch 17.
+- **Training accuracy at Epoch 20:** 94.5428%.
+- **Training loss at Epoch 20:** 0.1725044.
+- **Total recorded training time:** approximately 36.9 hours.
 
-The following results are taken from the recorded training history.
+The training loss generally decreases across the 20 epochs. Validation accuracy also improves overall, although some epochs show temporary declines. Epoch 17 has both the highest validation accuracy and the lowest validation loss in the supplied history.
 
-| Epoch | Training Loss | Training Accuracy | Validation Loss | Validation Accuracy | Duration (seconds) |
-|---:|---:|---:|---:|---:|---:|
-| 1 | 1.714159 | 51.35% | 0.781721 | 77.42% | 6121.67 |
-| 2 | 0.817357 | 75.44% | 0.503964 | 86.49% | 6141.33 |
-| 3 | 0.571830 | 82.69% | 0.417845 | 88.77% | 6129.22 |
-| 4 | 0.452984 | 86.29% | 0.371728 | 90.05% | 6092.54 |
-| 5 | 0.379222 | 88.53% | 0.327342 | 91.38% | 6076.53 |
-| 6 | 0.326542 | 90.20% | 0.309455 | 92.11% | 6097.88 |
-| 7 | 0.286395 | 91.39% | 0.300899 | 92.54% | 6028.05 |
-| 8 | 0.255193 | 92.39% | **0.297089** | 92.74% | 6083.22 |
-| 9 | 0.228878 | 93.11% | 0.304231 | 92.83% | 6053.57 |
-| 10 | **0.207024** | **93.81%** | 0.307952 | **93.05%** | 6115.12 |
+The saved checkpoint should be verified to confirm that it corresponds to the intended best epoch and checkpoint-selection criterion.
 
-*Accuracy values are converted from the recorded decimal values to percentages. Training durations are rounded to two decimal places.*
+### Checkpoint and outputs
 
-### Training progress summary
-
-| Metric | Epoch 1 | Epoch 10 |
-|---|---:|---:|
-| Training loss | 1.714159 | 0.207024 |
-| Training accuracy | 51.35% | 93.81% |
-| Validation loss | 0.781721 | 0.307952 |
-| Validation accuracy | 77.42% | 93.05% |
-
-The training loss decreased from 1.714159 to 0.207024 over the first 10 epochs. Training accuracy increased from 51.35% to 93.81%.
-
-Validation accuracy improved from 77.42% in Epoch 1 to 93.05% in Epoch 10.
-
-### Best recorded validation metrics
-
-- **Highest validation accuracy:** 93.05%, achieved in Epoch 10.
-- **Lowest validation loss:** 0.297089, achieved in Epoch 8.
-- **Training accuracy at Epoch 10:** 93.81%.
-- **Training loss at Epoch 10:** 0.207024.
-
-The lowest validation loss and highest validation accuracy occurred in different epochs. This is possible because loss and accuracy measure different aspects of model performance.
-
-Validation loss increased slightly in Epochs 9 and 10 even as validation accuracy improved. This should be monitored during further training because it may indicate emerging overfitting or changes in prediction confidence.
-
-### Training time
-
-Each epoch took approximately 100–103 minutes on the recorded hardware.
-
-The total recorded training time across the first 10 epochs was approximately **16.91 hours**.
-
-### Training output directory
-
-```text
-outputs/baseline_cnn_full/
-```
-
-The directory contains the baseline training artifacts, including the training history, training curves, and saved model checkpoint, depending on the outputs produced by the training scripts.
-
-### Checkpoint
-
-The best model checkpoint is saved at:
+The baseline checkpoint path recorded for the earlier full-training run is:
 
 ```text
 outputs/baseline_cnn_full/best_model.pth
 ```
 
-The training script uses validation performance to select the best checkpoint. Confirm the saved checkpoint's epoch and selection criterion before using it for final evaluation.
-
-**Important:** The reported 93.05% is validation accuracy, not test accuracy. Final performance must be measured on the reserved test set.
-
-## 10. Training Curves
-
-The training curves can be inspected at:
+The later hybrid experiment used this checkpoint path:
 
 ```text
-outputs/baseline_cnn_full/training_curves.png
+outputs/baseline_cnn_retrained/best_model.pth (this corresponds to 20 epoch training)
 ```
 
-The plots should be used to observe:
+Verify which checkpoint corresponds to the 20-epoch history before treating these paths as interchangeable. Keep the original checkpoint and training history intact.
 
-- Changes in training loss over the epochs.
-- Changes in validation loss over the epochs.
-- Improvements in training accuracy.
-- Improvements in validation accuracy.
-- Possible divergence between training and validation performance.
+## 9. Hybrid CNN + SVM Classification
 
-The recorded history shows consistent improvement in training accuracy. Validation accuracy also improves across the 10 recorded epochs, while validation loss reaches its minimum in Epoch 8 and increases slightly afterward.
+The hybrid approach uses the trained CNN as a feature extractor and a Linear Support Vector Classifier as the downstream classifier.
 
-## 11. Current Model Evaluation Status
+### Workflow
 
-The full-dataset baseline has completed 10 recorded training epochs. The following tasks remain pending:
+1. Load the selected CNN checkpoint.
+2. Extract the 256-dimensional representation from the CNN.
+3. Save feature vectors and labels for each split.
+4. Standardize the features using `StandardScaler`.
+5. Train a `LinearSVC` classifier on training features.
+6. Compare SVM hyperparameters using validation performance.
+7. Evaluate the selected configuration on the test set.
 
-- Final evaluation on the reserved test split.
-- Overall test accuracy.
-- Macro precision, recall, and F1-score.
-- Weighted precision, recall, and F1-score.
-- Per-class classification report.
-- Confusion matrix.
-- Error analysis.
-- Final comparison against the hybrid model.
+The CNN was not retrained during the initial feature-extraction and SVM tuning experiments.
 
-The reserved test set must remain separate from model training and checkpoint selection. Use the training and validation splits for development decisions, then evaluate the selected model on the test split.
+### Extracted feature files
 
-## 12. Planned Hybrid Classification Approach
+The completed hybrid run is stored at:
 
-The project's next major objective is to develop and evaluate the hybrid classification model.
+```text
+outputs/hybrid_svm_run_20261029_125118/
+```
 
-The exact hybrid architecture should be finalized before implementation. One possible approach is to use a trained CNN as a feature extractor and train a downstream classifier, such as a Support Vector Machine (SVM), using the extracted deep features.
+The saved feature files are:
 
-If the CNN + SVM approach is selected, the workflow will be:
+```text
+train_features.npz
+val_features.npz
+test_features.npz
+```
 
-1. Load the chosen trained CNN checkpoint.
-2. Remove or bypass its final classification layer to obtain deep feature vectors.
-3. Extract features for the training and validation images.
-4. Train the SVM using training features and labels.
-5. Select the downstream classifier configuration using validation performance.
-6. Evaluate the final hybrid pipeline on the reserved test set.
-7. Compare its performance with the baseline CNN.
+Feature dimensions:
 
-The selected CNN feature extractor should remain fixed while extracting features for a given SVM experiment. If the CNN checkpoint changes, the features should be extracted again for a fair and consistent experiment.
+| Split      |  Images | Feature shape   |
+| ---------- | ------: | --------------- |
+| Training   | 115,150 | `(115150, 256)` |
+| Validation |  24,675 | `(24675, 256)`  |
+| Test       |  24,676 | `(24676, 256)`  |
 
-## 13. Model Comparison Plan
+Each feature vector represents an image using the CNN's 256-dimensional pooled representation.
 
-The baseline and hybrid approaches should be evaluated on the same held-out test split.
+### Initial SVM configuration
 
-The planned comparison includes:
+| Parameter          | Value          |
+| ------------------ | -------------- |
+| Classifier         | LinearSVC      |
+| Initial `C`        | 1.0            |
+| Class weighting    | Balanced       |
+| Random state       | 42             |
+| Maximum iterations | 5000           |
+| Feature scaling    | StandardScaler |
 
-| Evaluation metric | Purpose |
-|---|---|
-| Accuracy | Measures overall classification correctness |
-| Macro precision | Measures precision averaged equally across classes |
-| Macro recall | Measures recall averaged equally across classes |
-| Macro F1-score | Measures class-balanced F1 performance |
-| Weighted F1-score | Accounts for class support |
-| Per-class metrics | Identifies classes with weaker performance |
-| Confusion matrix | Shows patterns of misclassification |
-| Inference time | Compares prediction speed |
-| Computational requirements | Documents resource usage |
+### Initial hybrid model results
 
-Final results should be reported only after the corresponding evaluations have been completed. No final test score or hybrid-model performance is claimed at this stage.
+| Metric          | Validation |     Test |
+| --------------- | ---------: | -------: |
+| Accuracy        |   97.4914% | 97.5361% |
+| Macro precision |   96.5528% | 96.2924% |
+| Macro recall    |   96.6293% | 96.7466% |
+| Macro F1        |   96.5851% | 96.5064% |
+| Weighted F1     |   97.4936% | 97.5401% |
+
+The test results above are from the completed initial hybrid evaluation.
+
+### Saved initial hybrid artifacts
+
+The original hybrid run contains the following outputs:
+
+```text
+outputs/hybrid_svm_run_20261029_125118/
+    hybrid_svm.joblib
+    run_summary.json
+    test_metrics.json
+    test_classification_report.csv
+    test_confusion_matrix.csv
+    val_metrics.json
+    val_classification_report.csv
+    val_confusion_matrix.csv
+    train_features.npz
+    val_features.npz
+    test_features.npz
+    per_class_analysis.csv
+```
+
+The actual directory contents should be checked if any file is not present.
+
+## 10. SVM Hyperparameter Tuning
+
+A follow-up experiment compared three values of the SVM regularization parameter, `C`.
+
+The experiment reused the existing CNN feature vectors. The CNN was not retrained, and the features were not extracted again.
+
+### Validation comparison
+
+|       C | Validation accuracy | Macro precision | Macro recall |     Macro F1 |  Weighted F1 |
+| ------: | ------------------: | --------------: | -----------: | -----------: | -----------: |
+|     0.1 |            97.4022% |        96.1607% |     96.6288% |     96.3868% |     97.4032% |
+| **1.0** |        **97.4914%** |    **96.5528%** | **96.6293%** | **96.5851%** | **97.4936%** |
+|    10.0 |            97.2847% |        96.2671% |     96.1687% |     96.2031% |     97.2871% |
+
+The selection criterion was the highest validation macro F1, with validation accuracy used as a tie-breaker.
+
+**Selected setting: `C = 1.0`.**
+
+The selected setting also achieved the highest validation accuracy among the three tested values. Therefore, this experiment did not demonstrate a benefit from changing the initial SVM configuration.
+
+### Final selected-model test metrics
+
+The selected `C = 1.0` model was evaluated on the test split.
+
+| Metric          | Test result |
+| --------------- | ----------: |
+| Accuracy        |    97.5361% |
+| Macro precision |    96.2924% |
+| Macro recall    |    96.7466% |
+| Macro F1        |    96.5064% |
+| Weighted F1     |    97.5401% |
+
+These metrics match the initial hybrid model's reported test results.
+
+### Tuning experiment outputs
+
+```text
+outputs/hybrid_svm_run_20261029_125118/
+    svm_tuning_20261029_142949/
+        validation_C_comparison.csv
+        validation_report_C_0.1.csv
+        validation_report_C_1.0.csv
+        validation_report_C_10.0.csv
+        selected_configuration.json
+        best_hybrid_svm.joblib
+        selected_model_test_metrics.json
+        selected_model_test_report.csv
+        selected_model_test_confusion_matrix.csv
+```
+
+The tuning experiment used the same existing feature files and saved its outputs in a new directory without replacing the original artifacts.
+
+## 11. Preliminary Baseline-versus-Hybrid Comparison
+
+The current recorded metrics are:
+
+| Metric      | Baseline CNN | Hybrid CNN + SVM |
+| ----------- | -----------: | ---------------: |
+| Accuracy    |     96.0204% |         97.5361% |
+| Macro F1    |     94.3328% |         96.5064% |
+| Weighted F1 |     96.0257% |         97.5401% |
+
+Based on these recorded values:
+
+- Accuracy difference: **+1.5157 percentage points** for the hybrid.
+- Macro F1 difference: **+2.1736 percentage points** for the hybrid.
+- Weighted F1 difference: **+1.5144 percentage points** for the hybrid.
+
+These are preliminary comparisons. Before making a final scientific claim that the hybrid approach is better, verify that both models used the same test split, label mapping, and comparable image preprocessing. Also verify the identity and provenance of the baseline checkpoint used for each reported metric.
+
+Do not use the test set to choose additional hyperparameters. Further model-development decisions should be made using training and validation data.
+
+## 12. Per-Class Error Analysis
+
+The hybrid model's earlier classification report identified several difficult classes.
+
+### Classes with lower F1 scores
+
+| Class                     | Precision | Recall |     F1 | Test support |
+| ------------------------- | --------: | -----: | -----: | -----------: |
+| Corn Gray Leaf Spot       |    85.28% | 81.74% | 83.47% |          241 |
+| Tomato Early Blight       |    85.86% | 87.90% | 86.87% |          463 |
+| Apple Cedar Apple Rust    |    86.75% | 95.62% | 90.97% |          137 |
+| Corn Northern Leaf Blight |    89.53% | 92.57% | 91.02% |          471 |
+| Tomato Leaf Mold          |    91.67% | 94.57% | 93.10% |          442 |
+
+### Frequently confused classes
+
+The recorded test analysis showed confusion between visually similar disease categories.
+
+| Actual class              | Predicted class           | Misclassifications |
+| ------------------------- | ------------------------- | -----------------: |
+| Corn Gray Leaf Spot       | Corn Northern Leaf Blight |                 36 |
+| Corn Northern Leaf Blight | Corn Gray Leaf Spot       |                 24 |
+| Tomato Late Blight        | Tomato Early Blight       |                 27 |
+| Tomato Early Blight       | Tomato Late Blight        |                 13 |
+| Tomato Septoria Leaf Spot | Tomato Early Blight       |                 17 |
+| Tomato Spider Mites       | Tomato Target Spot        |                 15 |
+
+Corn Gray Leaf Spot and Corn Northern Leaf Blight were frequently confused in both directions. Tomato Early Blight and Tomato Late Blight also showed notable confusion.
+
+These results suggest that future improvements should focus on distinguishing similar symptoms, while preserving performance across the other classes.
+
+**Evaluation note:** The class-level values above come from the earlier hybrid test report and should be used for diagnosis, not repeated test-driven model selection. Use validation reports to guide further experiments.
+
+## 13. Evaluation Methodology
+
+The project uses the following metrics:
+
+| Metric           | Purpose                                     |
+| ---------------- | ------------------------------------------- |
+| Accuracy         | Overall fraction of correct predictions     |
+| Macro precision  | Equal-weight average of per-class precision |
+| Macro recall     | Equal-weight average of per-class recall    |
+| Macro F1         | Equal-weight average of per-class F1        |
+| Weighted F1      | F1 averaged according to class support      |
+| Per-class report | Reveals weaker classes                      |
+| Confusion matrix | Shows patterns of misclassification         |
+
+The test set is reserved for final evaluation. Training and validation data should be used for training, checkpoint selection, and hyperparameter tuning.
+
+For a fair baseline-versus-hybrid comparison, both pipelines must use the same test examples and consistent label mapping. Preprocessing differences must be documented.
 
 ## 14. Current Machine Learning Pipeline
 
@@ -452,25 +532,28 @@ Unified 38-Class Dataset
 Stratified Train/Validation/Test Split
           |
           v
-Dataset and Preprocessing Verification
+Image Preprocessing
           |
           v
 Baseline CNN Training
           |
           v
-Validation and Checkpoint Selection
+CNN Checkpoint Selection
           |
           v
-Baseline Test Evaluation
+CNN Deep Feature Extraction
           |
           v
-Hybrid Model Development
+Feature Standardization
           |
           v
-Feature Extraction / Hybrid Classification
+LinearSVC Training and Validation Tuning
           |
           v
-Baseline-versus-Hybrid Comparison
+Selected Hybrid Model
+          |
+          v
+Test Evaluation and Error Analysis
           |
           v
 Inference API
@@ -484,7 +567,7 @@ Deployment
 
 ## 15. Project Structure
 
-The following is a documentation-oriented view of the relevant project files. Verify the actual directory contents before assuming every listed path exists.
+The following is a documentation-oriented overview of relevant files. Verify the actual repository structure before assuming every path exists.
 
 ```text
 plant-disease-hybrid/
@@ -498,57 +581,40 @@ plant-disease-hybrid/
 |   `-- config.yaml
 |
 |-- data/
-|   |-- raw/
 |   `-- processed/
 |       |-- metadata/
-|       |   |-- unified_dataset.csv
-|       |   |-- class_mapping.csv
-|       |   |-- hybrid_dataset_statistics.csv
-|       |   `-- unified_duplicates.csv
 |       `-- splits/
-|           |-- train.csv
-|           |-- val.csv
-|           `-- test.csv
-|
-|-- evaluation/
-|   `-- reports/
-|
-|-- models/
-|   `-- cnn/
 |
 |-- outputs/
 |   |-- baseline_cnn/
-|   `-- baseline_cnn_full/
-|       |-- training_history.csv
-|       |-- training_curves.png
-|       `-- best_model.pth
+|   |-- baseline_cnn_full/
+|   |-- baseline_cnn_retrained/
+|   `-- hybrid_svm_run_20261029_125118/
+|       |-- hybrid_svm.joblib
+|       |-- run_summary.json
+|       |-- test_metrics.json
+|       |-- test_classification_report.csv
+|       |-- test_confusion_matrix.csv
+|       |-- train_features.npz
+|       |-- val_features.npz
+|       |-- test_features.npz
+|       `-- svm_tuning_20261029_142949/
 |
 |-- scripts/
-|   `-- inspect_dataset.py
+|   |-- analyze_hybrid_results.py
+|   `-- tune_hybrid_svm.py
 |
 |-- src/
 |   |-- data/
-|   |   |-- clean_dataset.py
-|   |   `-- prepare_splits.py
 |   `-- models/
-|       |-- cnn_backbones.py
-|       |-- extract_deep_features.py
-|       `-- train_cnn.py
 |
-|-- baseline_cnn.py
-|-- dataset_loader.py
-|-- test_preprocessing.py
-|-- check_model.py
-|-- train_baseline.py
-|-- train_baseline_full.py
-|-- continue_baseline.py
 |-- .gitignore
 `-- README.md
 ```
 
 ## 16. Reproducibility and GitHub
 
-Avoid committing large datasets, virtual environments, or model binaries unless the project explicitly requires them.
+Avoid committing large datasets, virtual environments, and model binaries unless explicitly required by the project.
 
 A recommended `.gitignore` configuration is:
 
@@ -573,71 +639,66 @@ data/raw/
 *.ckpt
 ```
 
-If these files have already been committed, adding them to `.gitignore` alone will not remove them from Git tracking.
-
-When moving the project to another computer, install the required dependencies in a new virtual environment and update any dataset paths that point to machine-specific locations.
+Adding a pattern to `.gitignore` does not remove files that are already tracked by Git.
 
 Record the following for reproducibility:
 
-- Python and library versions.
-- GPU model and CUDA availability.
+- Python, PyTorch, torchvision, NumPy, pandas, and scikit-learn versions.
+- Hardware and CUDA availability for each run.
 - Dataset version and split definitions.
-- Model architecture and training configuration.
-- Random seed.
-- Training history and checkpoint selection criterion.
-- Final test results.
-- Hybrid-model configuration and evaluation results.
+- Model architecture and checkpoint identity.
+- Training configuration and random seed.
+- Training history and checkpoint-selection criterion.
+- SVM configuration and selected hyperparameters.
+- Final test metrics and class-level reports.
+- Image preprocessing and normalization configuration.
 
 ## 17. Next Development Milestones
 
-### Milestone 1: Baseline training review
+### Milestone 1: Verify baseline checkpoint provenance
 
-- Review all 10 recorded epochs.
-- Inspect `training_history.csv` and `training_curves.png`.
-- Confirm the epoch associated with `best_model.pth`.
-- Decide whether to continue training toward the planned 20 epochs.
-- Preserve existing checkpoints and logs.
+- Confirm which checkpoint corresponds to the supplied 20-epoch history.
+- Verify the checkpoint-selection criterion and selected epoch.
+- Preserve original model weights and logs.
 
-### Milestone 2: Baseline test evaluation
+### Milestone 2: Verify baseline test evaluation
 
-- Load the selected CNN checkpoint.
-- Evaluate the model on the reserved test split.
-- Generate accuracy, precision, recall, and F1-score metrics.
-- Save the per-class report and confusion matrix.
-- Document test results separately from validation results.
+- Confirm the source of the reported baseline test metrics.
+- Verify the split, class mapping, and preprocessing.
+- Save the final baseline classification report and confusion matrix.
 
-### Milestone 3: Hybrid model development
+### Milestone 3: Analyze difficult classes
 
-- Finalize the hybrid architecture.
-- Implement the selected feature-extraction or hybrid-classification pipeline.
-- Save separate checkpoints and experiment logs.
-- Tune model choices using validation data only.
+- Use validation data to investigate Corn Gray Leaf Spot and Corn Northern Leaf Blight.
+- Investigate confusion between Tomato Early Blight and Tomato Late Blight.
+- Identify suitable improvements without using test results for model selection.
 
-### Milestone 4: Performance comparison
+### Milestone 4: Improve the hybrid model
 
-- Evaluate the selected hybrid model on the same test split.
-- Compare the baseline and hybrid metrics.
-- Analyze per-class errors and confusion patterns.
-- Record inference time and computational requirements.
+- Explore feature-extraction and training strategies.
+- Compare changes using validation macro F1 and accuracy.
+- Save each experiment in a separate output directory.
+- Evaluate the selected final configuration on the reserved test set.
 
 ### Milestone 5: Application integration
 
-- Complete the inference pipeline.
-- Integrate image preprocessing and model loading into the API.
-- Return predicted classes and appropriate confidence information.
+- Complete model loading and inference.
+- Integrate image preprocessing into the API.
+- Return predicted class and suitable confidence information.
 - Connect the frontend.
-- Test the complete image-prediction workflow.
+- Test the end-to-end image-prediction workflow.
 - Prepare deployment and final project documentation.
 
 ## Conclusion
 
-The dataset preparation and validation stages are complete, and the baseline CNN has completed **10 full-dataset training epochs**.
+The project has completed dataset preparation, baseline CNN training for 20 recorded epochs, CNN feature extraction, and an initial hybrid CNN + SVM evaluation.
 
-At Epoch 10, the model achieved **93.81% training accuracy and 93.05% validation accuracy**. The lowest recorded validation loss was **0.297089 at Epoch 8**.
+The baseline achieved its best recorded validation accuracy of **96.3607% at Epoch 17**. The hybrid classifier using `LinearSVC(C=1.0)` achieved **97.5361% test accuracy** and **96.5064% test macro F1** in the recorded experiment.
 
-The next milestones are to review the saved checkpoint, complete the baseline's held-out test evaluation, and implement the hybrid classification approach. A final test score and a baseline-versus-hybrid comparison have not yet been established.
+The SVM tuning experiment compared `C = 0.1`, `C = 1.0`, and `C = 10.0`. The best validation macro F1 was obtained at `C = 1.0`, so the original SVM configuration remains selected.
 
-**Current milestone:** Baseline CNN training — 10 epochs completed.
+The next priorities are to verify checkpoint provenance and preprocessing consistency, investigate the difficult disease classes using validation data, and prepare the inference API and frontend integration.
 
-**Next milestone:** Checkpoint verification, baseline test evaluation, and hybrid model development.
-*
+**Current milestone:** Baseline CNN training and initial hybrid classification completed.
+
+**Next milestone:** Reproducibility verification, validation-based error analysis, and application integration.

@@ -1,0 +1,8 @@
+{
+  "selected_C": 1.0,
+  "test_accuracy": 0.9753606743394392,
+  "test_macro_precision": 0.9629242842635041,
+  "test_macro_recall": 0.96746607203742,
+  "test_macro_f1": 0.9650640723463869,
+  "test_weighted_f1": 0.975400752452119
+}

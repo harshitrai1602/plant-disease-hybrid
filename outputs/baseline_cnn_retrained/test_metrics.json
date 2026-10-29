@@ -1,0 +1,7 @@
+{
+    "checkpoint_epoch": 17,
+    "best_validation_accuracy": 0.9636068895643364,
+    "test_accuracy": 0.96020424704166,
+    "test_samples": 24676,
+    "num_classes": 38
+}

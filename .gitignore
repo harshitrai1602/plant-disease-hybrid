@@ -32,3 +32,13 @@ data/raw/
 # Temporary files
 *.tmp
 *.temp
+
+# Generated hybrid model features
+outputs/hybrid_svm_run_*/train_features.npz
+outputs/hybrid_svm_run_*/val_features.npz
+outputs/hybrid_svm_run_*/test_features.npz
+
+# Generated model artifacts and experiment outputs
+outputs/hybrid_svm_run_*/hybrid_svm.joblib
+outputs/hybrid_svm_run_*/svm_tuning_*/
+
