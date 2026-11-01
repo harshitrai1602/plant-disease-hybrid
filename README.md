@@ -9,16 +9,20 @@ comparison.
 The unified dataset is reported as containing **164,501 images across 38
 canonical plant health and disease classes**.
 
-
+> **Project status note:** This README combines the supplied project
+> README with the later *Baseline Validation Report*. Where the records
+> contain conflicting
+> checkpoint paths, metric availability, or environment details, those
+> points are explicitly marked for verification rather than silently
+> treated as settled facts.
 
 ------------------------------------------------------------------------
 
 ## 1. Current Project Status
 
-  ----------------------------------------------------------------------                                   
-  --------------------------       -----------------------------
+  -----------------------------------------------------------------------
   Component                           Status
-   
+  ----------------------------------- -----------------------------------
   PlantVillage and PlantDoc           Completed
   collection                          
 
