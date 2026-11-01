@@ -20,71 +20,49 @@ canonical plant health and disease classes**.
 
 ## 1. Current Project Status
 
-  -----------------------------------------------------------------------
-  Component                           Status
-  ----------------------------------- -----------------------------------
-  PlantVillage and PlantDoc           Completed
-  collection                          
+The following table summarises the development progress of the Plant Disease Hybrid Classification project.
 
-  Dataset class mapping and           Completed
-  unification                         
+| Component | Status |
+|---|---|
+| PlantVillage and PlantDoc dataset collection | ✅ Completed |
+| Dataset class mapping and unification | ✅ Completed |
+| Missing-file validation | ✅ Completed |
+| Exact duplicate detection | ✅ Completed |
+| Stratified train/validation/test splitting | ✅ Completed |
+| Dataset and DataLoader verification | ✅ Completed |
+| Image preprocessing and augmentation tests | ✅ Completed |
+| Baseline CNN training | ✅ 20 epochs recorded |
+| Baseline checkpoint | ✅ Saved (provenance verification pending) |
+| Baseline validation evaluation | ✅ Completed |
+| Baseline held-out test evaluation | ✅ Completed |
+| Hybrid CNN feature extraction | ✅ Completed |
+| Initial CNN + SVM model | ✅ Completed |
+| SVM hyperparameter comparison | ✅ Completed |
+| Hybrid validation evaluation | ✅ Completed |
+| Hybrid test evaluation | ✅ Completed |
+| Baseline-versus-hybrid validation comparison | ✅ Completed |
+| Baseline-versus-hybrid test comparison | ✅ Completed |
+| Per-class performance and confusion analysis | ✅ Completed |
+| Misclassification analysis | ✅ Completed |
+| Inference API | ⏳ Pending |
+| Frontend integration | Not planned |
+| Deployment | Not planned |
 
-  Missing-file validation during      Completed
-  dataset preparation                 
+### Notes on Evaluation
 
-  Exact duplicate detection           Completed
+- Baseline and hybrid models have been evaluated on both validation and held-out test datasets.
+- Comparative evaluation includes overall metrics, per-class performance, confusion matrices, and misclassification analysis.
+- Validation comparisons are structurally aligned. Preprocessing and feature provenance should remain documented.
+- The baseline checkpoint has been saved; its exact provenance still requires verification.
 
-  Stratified train/validation/test    Completed
-  splitting                           
+### Execution Support
 
-  Dataset and DataLoader verification Completed
+The project supports both CPU and GPU-based execution:
 
-  Image preprocessing and             Completed
-  augmentation tests                  
+- **CPU:** Runs on systems without a dedicated GPU.
+- **GPU + CUDA:** Uses a compatible NVIDIA GPU when CUDA-enabled PyTorch and the required drivers are available.
 
-  Baseline CNN training               20 epochs recorded
-
-  Baseline checkpoint                 Saved; exact checkpoint provenance
-                                      should be verified
-
-  Baseline validation evaluation      Completed; validation report and
-                                      confusion matrix generated
-
-  Baseline held-out test evaluation   Completed; test metrics and report
-                                      available
-
-  Hybrid CNN feature extraction       Completed
-
-  Initial CNN + SVM model             Completed
-
-  SVM hyperparameter comparison       Completed
-
-  Hybrid validation evaluation        Completed
-
-  Hybrid test evaluation              Completed
-
-  Baseline-versus-hybrid validation   Completed structurally;
-  comparison                          preprocessing and feature
-                                      provenance should remain documented
-
-  Baseline-versus-hybrid test         Completed; same class
-  comparison                          names/supports reported
-
-  Per-class comparison and confusion  Completed
-  analysis                            
-
-  Misclassification analysis          Completed
-
-  Inference API                       Pending
-
-  Frontend integration                Not planned yet
-
-  Deployment                          Not planned yet
-
-  Saved-feature compatibility         Pending
-  investigation                       
-  -----------------------------------------------------------------------
-
+The execution device is selected according to the available hardware and software environment.
 ## 2. Project Overview
 
 The objective is to classify plant leaf images into 38 canonical plant
