@@ -1,0 +1,5 @@
+model,class_a,class_b,a_true_predicted_as_b,b_true_predicted_as_a,combined_pair_confusions,a_correct,a_total,a_recall_from_matrix,b_correct,b_total,b_recall_from_matrix,status
+Baseline CNN,Corn_Gray_leaf_spot,Corn_Northern_Leaf_Blight,15,60,75,219,241,0.9087136929460581,386,472,0.8177966101694916,OK
+Baseline CNN,Tomato_Early_blight,Tomato_Late_blight,42,9,51,364,463,0.7861771058315334,817,872,0.9369266055045872,OK
+Hybrid CNN + SVM,Corn_Gray_leaf_spot,Corn_Northern_Leaf_Blight,35,31,66,203,241,0.8423236514522822,425,472,0.9004237288135594,OK
+Hybrid CNN + SVM,Tomato_Early_blight,Tomato_Late_blight,20,20,40,398,463,0.8596112311015118,809,872,0.9277522935779816,OK

@@ -1,0 +1,35 @@
+VALIDATION-ONLY PER-CLASS ANALYSIS
+============================================================
+Classes compared: 38
+
+Mean per-class F1:
+Baseline CNN: 0.9433
+Hybrid CNN + SVM: 0.9659
+Mean F1 change: +0.0225
+
+TOP FIVE F1 IMPROVEMENTS
+                class_name  f1-score_baseline  f1-score_hybrid  f1_change
+            Potato_healthy           0.767857         0.940299   0.172441
+       Tomato_Early_blight           0.811881         0.868048   0.056167
+Tomato_Tomato_mosaic_virus           0.883117         0.932961   0.049844
+ Corn_Northern_Leaf_Blight           0.855856         0.900424   0.044568
+        Tomato_Late_blight           0.882766         0.920364   0.037598
+
+TOP FIVE F1 REGRESSIONS
+           class_name  f1-score_baseline  f1-score_hybrid  f1_change
+         Corn_healthy           0.994275         0.991437  -0.002838
+Pepper_Bacterial_spot           0.963696         0.961373  -0.002323
+    Raspberry_healthy           0.996997         0.996997   0.000000
+        Grape_healthy           0.992126         0.994792   0.002666
+           Orange_HLB           0.995774         0.998586   0.002812
+
+TARGETED VALIDATION CONFUSIONS
+           model             class_a                   class_b  a_true_predicted_as_b  b_true_predicted_as_a  combined_pair_confusions  a_correct  a_total  a_recall_from_matrix  b_correct  b_total  b_recall_from_matrix status
+    Baseline CNN Corn_Gray_leaf_spot Corn_Northern_Leaf_Blight                     24                     63                        87        209      241              0.867220        380      471              0.806794     OK
+    Baseline CNN Tomato_Early_blight        Tomato_Late_blight                     44                     14                        58        369      463              0.796976        817      872              0.936927     OK
+Hybrid CNN + SVM Corn_Gray_leaf_spot Corn_Northern_Leaf_Blight                     35                     31                        66        203      241              0.842324        425      472              0.900424     OK
+Hybrid CNN + SVM Tomato_Early_blight        Tomato_Late_blight                     20                     20                        40        398      463              0.859611        809      872              0.927752     OK
+
+No test-set files were loaded.
+No models were trained or fitted.
+Existing artifacts were not overwritten.

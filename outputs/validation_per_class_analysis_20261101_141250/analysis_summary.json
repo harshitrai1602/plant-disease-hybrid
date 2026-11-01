@@ -1,0 +1,140 @@
+{
+    "analysis_split": "validation",
+    "baseline_report": "outputs\\baseline_cnn_retrained\\val_classification_report.csv",
+    "baseline_confusion_matrix": "outputs\\baseline_cnn_retrained\\val_confusion_matrix.csv",
+    "hybrid_report": "outputs\\hybrid_svm_run_20261029_125118\\val_classification_report.csv",
+    "hybrid_confusion_matrix": "outputs\\hybrid_svm_run_20261029_125118\\val_confusion_matrix.csv",
+    "number_of_classes_compared": 38,
+    "mean_baseline_class_f1": 0.9492388167619722,
+    "mean_hybrid_class_f1": 0.9658506103279106,
+    "mean_class_f1_change": 0.016611793565938632,
+    "best_f1_improvements": [
+        {
+            "class_name": "Potato_healthy",
+            "f1-score_baseline": 0.7678571428571429,
+            "f1-score_hybrid": 0.9402985074626866,
+            "f1_change": 0.1724413646055437
+        },
+        {
+            "class_name": "Tomato_Tomato_mosaic_virus",
+            "f1-score_baseline": 0.8673469387755102,
+            "f1-score_hybrid": 0.9329608938547486,
+            "f1_change": 0.0656139550792384
+        },
+        {
+            "class_name": "Tomato_Early_blight",
+            "f1-score_baseline": 0.8035320088300221,
+            "f1-score_hybrid": 0.8680479825517994,
+            "f1_change": 0.06451597372177731
+        },
+        {
+            "class_name": "Potato_Late_blight",
+            "f1-score_baseline": 0.890738813735692,
+            "f1-score_hybrid": 0.9367631296891747,
+            "f1_change": 0.046024315953482775
+        },
+        {
+            "class_name": "Tomato_Late_blight",
+            "f1-score_baseline": 0.8770799785292539,
+            "f1-score_hybrid": 0.9203640500568828,
+            "f1_change": 0.04328407152762892
+        }
+    ],
+    "largest_f1_regressions": [
+        {
+            "class_name": "Pepper_Bacterial_spot",
+            "f1-score_baseline": 0.9693654266958425,
+            "f1-score_hybrid": 0.9613733905579399,
+            "f1_change": -0.007992036137902558
+        },
+        {
+            "class_name": "Grape_healthy",
+            "f1-score_baseline": 1.0,
+            "f1-score_hybrid": 0.9947916666666666,
+            "f1_change": -0.00520833333333337
+        },
+        {
+            "class_name": "Raspberry_healthy",
+            "f1-score_baseline": 1.0,
+            "f1-score_hybrid": 0.996996996996997,
+            "f1_change": -0.0030030030030030463
+        },
+        {
+            "class_name": "Cherry_healthy",
+            "f1-score_baseline": 0.9974025974025974,
+            "f1-score_hybrid": 0.9974025974025974,
+            "f1_change": 0.0
+        },
+        {
+            "class_name": "Potato_Early_blight",
+            "f1-score_baseline": 0.9613259668508287,
+            "f1-score_hybrid": 0.9617021276595744,
+            "f1_change": 0.0003761608087456958
+        }
+    ],
+    "targeted_pair_confusions": [
+        {
+            "model": "Baseline CNN",
+            "class_a": "Corn_Gray_leaf_spot",
+            "class_b": "Corn_Northern_Leaf_Blight",
+            "a_true_predicted_as_b": 15,
+            "b_true_predicted_as_a": 60,
+            "combined_pair_confusions": 75,
+            "a_correct": 219,
+            "a_total": 241,
+            "a_recall_from_matrix": 0.9087136929460581,
+            "b_correct": 386,
+            "b_total": 472,
+            "b_recall_from_matrix": 0.8177966101694916,
+            "status": "OK"
+        },
+        {
+            "model": "Baseline CNN",
+            "class_a": "Tomato_Early_blight",
+            "class_b": "Tomato_Late_blight",
+            "a_true_predicted_as_b": 42,
+            "b_true_predicted_as_a": 9,
+            "combined_pair_confusions": 51,
+            "a_correct": 364,
+            "a_total": 463,
+            "a_recall_from_matrix": 0.7861771058315334,
+            "b_correct": 817,
+            "b_total": 872,
+            "b_recall_from_matrix": 0.9369266055045872,
+            "status": "OK"
+        },
+        {
+            "model": "Hybrid CNN + SVM",
+            "class_a": "Corn_Gray_leaf_spot",
+            "class_b": "Corn_Northern_Leaf_Blight",
+            "a_true_predicted_as_b": 35,
+            "b_true_predicted_as_a": 31,
+            "combined_pair_confusions": 66,
+            "a_correct": 203,
+            "a_total": 241,
+            "a_recall_from_matrix": 0.8423236514522822,
+            "b_correct": 425,
+            "b_total": 472,
+            "b_recall_from_matrix": 0.9004237288135594,
+            "status": "OK"
+        },
+        {
+            "model": "Hybrid CNN + SVM",
+            "class_a": "Tomato_Early_blight",
+            "class_b": "Tomato_Late_blight",
+            "a_true_predicted_as_b": 20,
+            "b_true_predicted_as_a": 20,
+            "combined_pair_confusions": 40,
+            "a_correct": 398,
+            "a_total": 463,
+            "a_recall_from_matrix": 0.8596112311015118,
+            "b_correct": 809,
+            "b_total": 872,
+            "b_recall_from_matrix": 0.9277522935779816,
+            "status": "OK"
+        }
+    ],
+    "test_set_used": false,
+    "baseline_retrained": false,
+    "svm_retrained": false
+}

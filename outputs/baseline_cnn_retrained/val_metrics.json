@@ -1,0 +1,17 @@
+{
+    "model": "BaselineCNN",
+    "evaluation_type": "validation_only",
+    "dataset": "data/processed/splits/val.csv",
+    "total_validation_images": 24675,
+    "num_classes": 38,
+    "device": "cpu",
+    "accuracy": 0.9636068895643364,
+    "macro_precision": 0.9558067276468698,
+    "macro_recall": 0.9467300872307317,
+    "macro_f1": 0.9492388167619721,
+    "weighted_f1": 0.9636996900479725,
+    "checkpoint": "C:\\Users\\ottaa\\OneDrive\\Desktop\\Minor Project\\plant-disease-hybrid\\outputs\\baseline_cnn_retrained\\best_model.pth",
+    "training_performed": false,
+    "model_fitting_performed": false,
+    "test_dataset_loaded": false
+}

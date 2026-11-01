@@ -1,0 +1,13 @@
+{
+  "test_samples": 24676,
+  "num_classes": 38,
+  "class_names_match": true,
+  "class_supports_match": true,
+  "baseline_accuracy": 0.96020424704166,
+  "hybrid_accuracy": 0.9753606743394392,
+  "accuracy_improvement_percentage_points": 1.5156427297779218,
+  "baseline_macro_f1": 0.9433283079548263,
+  "hybrid_macro_f1": 0.9650640723463869,
+  "macro_f1_improvement_percentage_points": 2.1735764391560664,
+  "output_directory": "outputs\\test_evaluation_comparison_20261101_143406"
+}
